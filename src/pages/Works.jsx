@@ -19,7 +19,7 @@ function Works() {
       category: "Starbucks",
       image:
         "https://res.cloudinary.com/daadrhhk9/image/upload/v1790492343/ChatGPT_Image_Sep_27_2026_12_28_40_PM_tdfhus.png",
-      url: "",
+      url: "https://sstar-buckss.netlify.app/",
     },
     {
       id: 3,
