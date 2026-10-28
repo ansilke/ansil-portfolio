@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import About from "./About";
@@ -7,10 +6,13 @@ import Works from "./Works";
 import Contact from "./Contact";
 
 const LOGO_URL =
-  "https://res.cloudinary.com/daadrhhk9/image/upload/v1792823909/Bold_White_Ainsil_Logo_on_Transparent_Background_ljxvbg.png";
+  "https://res.cloudinary.com/daadrhhk9/image/upload/v1793209345/Group_302_wtvihy.png";
 
 const PROFILE_IMAGE =
   "https://res.cloudinary.com/daadrhhk9/image/upload/v1789981660/FCA204F0-7780-4603-88A6-8B1F3CD2B871_pufgqd.png";
+
+const INTRO_CORNER_LOGO_URL =
+  "https://res.cloudinary.com/daadrhhk9/image/upload/v1793208782/image_100_urzz65.png";
 
 function Herosection() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -22,7 +24,6 @@ function Herosection() {
 
   const BOUNCE_DURATION = 4800;
 
-  // Preload images before starting the intro.
   useEffect(() => {
     let cancelled = false;
     const timers = [];
@@ -30,17 +31,16 @@ function Herosection() {
     const waitForImage = (src) =>
       new Promise((resolve) => {
         const image = new Image();
-
         image.onload = resolve;
         image.onerror = resolve;
         image.src = src;
-
         if (image.complete) resolve();
       });
 
     async function startIntro() {
       await Promise.all([
         waitForImage(LOGO_URL),
+        waitForImage(INTRO_CORNER_LOGO_URL),
         waitForImage(PROFILE_IMAGE),
         document.fonts?.ready ?? Promise.resolve(),
       ]);
@@ -79,7 +79,6 @@ function Herosection() {
     };
   }, []);
 
-  // Loading percentage synced to the bounce animation.
   useEffect(() => {
     if (introStage !== "bounce") return;
 
@@ -107,7 +106,6 @@ function Herosection() {
     };
   }, [introStage]);
 
-  // Original hero counters.
   useEffect(() => {
     let startTimestamp = null;
     let animationFrame;
@@ -154,8 +152,6 @@ function Herosection() {
           font-family: 'Inter', sans-serif;
         }
 
-        /* TRUST THE PROCESS TYPOGRAPHY */
-
         .intro-trust-copy {
           position: absolute;
           top: clamp(24px, 4.3vh, 42px);
@@ -181,8 +177,6 @@ function Herosection() {
           font-family: 'Inter', sans-serif;
           font-weight: 300;
         }
-
-        /* Keep "the" in its original cursive font */
 
         .intro-trust-script {
           position: relative;
@@ -280,64 +274,51 @@ function Herosection() {
           animation: scrollArrow 1.5s ease-in-out infinite;
         }
 
-        /* ORIGINAL BOUNCING BALL ANIMATION */
-
         @keyframes introBounce {
           0% {
             transform: translate(-50%, 0) scale(1, 1);
             animation-timing-function: cubic-bezier(.2,.7,.3,1);
           }
-
           4.17% {
             transform: translate(-50%, 0) scale(1.08,.92);
             animation-timing-function: cubic-bezier(.2,.65,.35,1);
           }
-
           19.17% {
             transform: translate(-50%, -43vh) scale(.99,1.01);
             animation-timing-function: cubic-bezier(.35,0,.75,.4);
           }
-
           32.5% {
             transform: translate(-50%, 0) scale(1.09,.91);
             animation-timing-function: cubic-bezier(.2,.7,.3,1);
           }
-
           35.83% {
             transform: translate(-50%, 0) scale(1,1);
             animation-timing-function: cubic-bezier(.2,.65,.35,1);
           }
-
           49.17% {
             transform: translate(-50%, -23vh) scale(.995,1.005);
             animation-timing-function: cubic-bezier(.35,0,.75,.4);
           }
-
           60.83% {
             transform: translate(-50%, 0) scale(1.055,.945);
             animation-timing-function: cubic-bezier(.2,.7,.3,1);
           }
-
           64.17% {
             transform: translate(-50%, 0) scale(1,1);
             animation-timing-function: cubic-bezier(.2,.65,.35,1);
           }
-
           72.5% {
             transform: translate(-50%, -7vh) scale(1,1);
             animation-timing-function: cubic-bezier(.35,0,.75,.4);
           }
-
           78.33% {
             transform: translate(-50%, 0) scale(1.025,.975);
             animation-timing-function: cubic-bezier(.2,.7,.3,1);
           }
-
           80.83% {
             transform: translate(-50%, 0) scale(1,1);
             animation-timing-function: cubic-bezier(.22,.61,.36,1);
           }
-
           100% {
             transform: translate(-50%, calc(-50dvh + 56px)) scale(1,1);
           }
@@ -413,7 +394,28 @@ function Herosection() {
           animation: logoReveal .55s cubic-bezier(.2,.75,.25,1) .35s both;
         }
 
-        /* LOADING PERCENTAGE — NO INDEPENDENT FADE */
+        .intro-corner-logo {
+          position: fixed;
+          left: clamp(22px, 4.2vw, 70px);
+          bottom: clamp(20px, 3.2vh, 34px);
+          z-index: 10001;
+          width: clamp(54px, 6.2vw, 94px);
+          height: clamp(54px, 6.2vw, 94px);
+          object-fit: contain;
+          object-position: left bottom;
+          pointer-events: none;
+          user-select: none;
+          -webkit-user-drag: none;
+        }
+
+        @media (max-width: 640px) {
+          .intro-corner-logo {
+            left: 22px;
+            bottom: 26px;
+            width: 56px;
+            height: 56px;
+          }
+        }
 
         .intro-loading-readout {
           position: fixed;
@@ -475,33 +477,30 @@ function Herosection() {
           className={`
             fixed inset-0 z-[9999] overflow-hidden
             ${
-              introStage === "white" || introStage === "bounce"
+              introStage === "white" ||
+              introStage === "bounce" ||
+              introStage === "expand"
                 ? "bg-white"
-                : introStage === "expand"
-                  ? "bg-white"
-                  : "bg-black"
+                : "bg-black"
             }
             ${introStage === "exit" ? "intro-shutter-exit" : ""}
           `}
           aria-hidden="true"
         >
-          {/* TRUST THE PROCESS — STAYS UNTIL THE CIRCLE COVERS IT */}
-
+          {/* TRUST THE PROCESS */}
           {["white", "bounce", "expand"].includes(introStage) && (
             <div className="intro-trust-copy">
               <div className="intro-trust-first-line">
                 <span>trust</span>
                 <span className="intro-trust-script">the</span>
               </div>
-
               <div className="intro-trust-second-line">
                 process.
               </div>
             </div>
           )}
 
-          {/* BOUNCING BALL — CONTINUES DURING EXPANSION */}
-
+          {/* BOUNCING BALL */}
           {["bounce", "expand"].includes(introStage) && (
             <div
               className="
@@ -517,8 +516,17 @@ function Herosection() {
             />
           )}
 
-          {/* LOADING PERCENTAGE — STAYS UNTIL THE CIRCLE COVERS IT */}
+          {/* BOTTOM-LEFT CORNER LOGO */}
+          {["white", "bounce", "expand"].includes(introStage) && (
+            <img
+              src={INTRO_CORNER_LOGO_URL}
+              alt="Ansil Logo"
+              draggable="false"
+              className="intro-corner-logo"
+            />
+          )}
 
+          {/* LOADING PERCENTAGE */}
           {["bounce", "expand"].includes(introStage) && (
             <div
               className="intro-loading-readout"
@@ -528,15 +536,13 @@ function Herosection() {
                 {loadingProgress}
                 <span className="text-[.92em] tracking-normal">%</span>
               </span>
-
               <span className="intro-loading-caption">
                 Loading
               </span>
             </div>
           )}
 
-          {/* EXPANDING CIRCLE — COVERS TEXT AND BALL */}
-
+          {/* EXPANDING CIRCLE */}
           {introStage === "expand" && (
             <div
               className="
@@ -548,8 +554,7 @@ function Herosection() {
             />
           )}
 
-          {/* CENTERED LOGO — ABOVE THE CIRCLE */}
-
+          {/* CENTERED WHITE LOGO */}
           {["expand", "logo", "exit"].includes(introStage) && (
             <img
               key="intro-logo"
@@ -570,7 +575,6 @@ function Herosection() {
       )}
 
       {/* HEADER */}
-
       <div className="fixed left-0 right-0 top-0 z-50 bg-[#F8F8F8]/80 backdrop-blur-md">
         <Header
           currentView={currentView}
@@ -579,16 +583,12 @@ function Herosection() {
       </div>
 
       {/* MAIN CONTENT */}
-
       <div className="relative h-full w-full flex-1 overflow-hidden pt-20 lg:pt-24">
         {/* HOME */}
-
         {currentView === "home" && (
           <div className="absolute inset-0 z-20 flex h-full w-full flex-col justify-between overflow-y-auto bg-[#F8F8F8] pt-20 animate-slide-up-overlay lg:pt-24">
             <div className="relative flex h-full flex-col justify-between">
-
               {/* MOBILE + IPAD HERO */}
-
               <div className="relative flex w-full flex-1 flex-col overflow-hidden px-6 pb-0 pt-4 font-inter lg:hidden">
                 <div
                   className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 flex items-end justify-center animate-smooth-entrance"
@@ -655,7 +655,6 @@ function Herosection() {
               </div>
 
               {/* DESKTOP HERO */}
-
               <div className="relative mx-auto my-auto hidden w-full max-w-[1700px] flex-1 items-center justify-between px-16 font-inter lg:flex">
                 <div
                   className="absolute left-[95px] top-[10%] z-30 flex origin-top-left select-none flex-col items-start animate-smooth-entrance"
@@ -755,7 +754,6 @@ function Herosection() {
         )}
 
         {/* ABOUT */}
-
         {currentView === "about" && (
           <div className="absolute inset-0 z-20 h-full w-full overflow-y-auto bg-[#F8F8F8] px-6 pb-12 pt-28 animate-slide-up-overlay lg:px-16 lg:pt-32">
             <About />
@@ -763,7 +761,6 @@ function Herosection() {
         )}
 
         {/* PROJECTS */}
-
         {currentView === "projects" && (
           <div className="absolute inset-0 z-20 h-full w-full overflow-y-auto bg-[#F8F8F8] animate-slide-up-overlay">
             <Works />
@@ -771,7 +768,6 @@ function Herosection() {
         )}
 
         {/* CONTACT */}
-
         {currentView === "contact" && (
           <div className="absolute inset-0 z-20 h-full w-full overflow-y-auto bg-[#F8F8F8] px-6 pb-16 pt-28 animate-slide-up-overlay lg:px-16 lg:pt-32">
             <Contact />
