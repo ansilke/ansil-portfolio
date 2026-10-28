@@ -43,7 +43,7 @@ function Works() {
       category: "HTML & CSS",
       image:
         "https://res.cloudinary.com/daadrhhk9/image/upload/v1791396006/Moody_My_TODO_App_Workspace_gc7iya.png",
-      url: "",
+      url: "http://myy-to-do.netlify.app/",
     },
     {
       id: 6,
