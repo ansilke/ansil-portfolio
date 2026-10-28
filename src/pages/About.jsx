@@ -8,7 +8,7 @@ export default function About() {
   const sectionRef = useRef(null);
 
   // Corrected and valid profile image link
-  const profileImage = "https://res.cloudinary.com/daadrhhk9/image/upload/v1793032829/7072AF66-8E68-4205-A147-1714FFAF9702_1_201_a_npxx1b.jpg";
+  const profileImage = "https://res.cloudinary.com/daadrhhk9/image/upload/v1793213222/Group_258_hgpp4c.png";
 
   const rawSkillsList = [
     { name: 'JavaScript', value: 95 },
@@ -228,7 +228,7 @@ export default function About() {
             <img 
               src={profileImage} 
               alt="Muhemmed Ansil" 
-              className="w-full h-full object-cover rounded-sm"
+              className="w-full h-full grayscale object-cover rounded-sm"
             />
           </div>
         </div>

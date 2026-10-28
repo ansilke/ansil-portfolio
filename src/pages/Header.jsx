@@ -64,7 +64,7 @@ function Header({ currentView, setCurrentView }) {
             className="flex items-center cursor-pointer"
           >
           
-              <img className='w-25 h-7' src="https://res.cloudinary.com/daadrhhk9/image/upload/v1793210265/Group_303_1_lsx2fw.png" alt="" />
+              <img className='w-25 h-8' src="https://res.cloudinary.com/daadrhhk9/image/upload/v1793210265/Group_303_1_lsx2fw.png" alt="" />
             
           </div>
 
