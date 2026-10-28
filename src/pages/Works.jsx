@@ -59,7 +59,7 @@ function Works() {
       category: "KE Taste",
       image:
         "https://res.cloudinary.com/daadrhhk9/image/upload/v1791401193/Late-Night_Pickle_Website_Workspace_qv6upl.png",
-      url: "",
+      url: "https://ke-taste.netlify.app/",
     },
     {
       id: 8,
