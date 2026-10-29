@@ -6,13 +6,10 @@ import Works from "./Works";
 import Contact from "./Contact";
 
 const LOGO_URL =
-  "https://res.cloudinary.com/daadrhhk9/image/upload/v1793209345/Group_302_wtvihy.png";
+  "https://res.cloudinary.com/daadrhhk9/image/upload/v1792823909/Bold_White_Ainsil_Logo_on_Transparent_Background_ljxvbg.png";
 
 const PROFILE_IMAGE =
   "https://res.cloudinary.com/daadrhhk9/image/upload/v1789981660/FCA204F0-7780-4603-88A6-8B1F3CD2B871_pufgqd.png";
-
-const INTRO_CORNER_LOGO_URL =
-  "https://res.cloudinary.com/daadrhhk9/image/upload/v1793208782/image_100_urzz65.png";
 
 function Herosection() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -40,7 +37,6 @@ function Herosection() {
     async function startIntro() {
       await Promise.all([
         waitForImage(LOGO_URL),
-        waitForImage(INTRO_CORNER_LOGO_URL),
         waitForImage(PROFILE_IMAGE),
         document.fonts?.ready ?? Promise.resolve(),
       ]);
@@ -394,29 +390,6 @@ function Herosection() {
           animation: logoReveal .55s cubic-bezier(.2,.75,.25,1) .35s both;
         }
 
-        .intro-corner-logo {
-          position: fixed;
-          left: clamp(22px, 4.2vw, 70px);
-          bottom: clamp(20px, 3.2vh, 34px);
-          z-index: 10001;
-          width: clamp(54px, 6.2vw, 94px);
-          height: clamp(54px, 6.2vw, 94px);
-          object-fit: contain;
-          object-position: left bottom;
-          pointer-events: none;
-          user-select: none;
-          -webkit-user-drag: none;
-        }
-
-        @media (max-width: 640px) {
-          .intro-corner-logo {
-            left: 22px;
-            bottom: 26px;
-            width: 56px;
-            height: 56px;
-          }
-        }
-
         .intro-loading-readout {
           position: fixed;
           right: clamp(22px, 5vw, 76px);
@@ -513,16 +486,6 @@ function Herosection() {
                 zIndex: 10000,
                 animation: `introBounce ${BOUNCE_DURATION}ms linear both`,
               }}
-            />
-          )}
-
-          {/* BOTTOM-LEFT CORNER LOGO */}
-          {["white", "bounce", "expand"].includes(introStage) && (
-            <img
-              src={INTRO_CORNER_LOGO_URL}
-              alt="Ansil Logo"
-              draggable="false"
-              className="intro-corner-logo"
             />
           )}
 
