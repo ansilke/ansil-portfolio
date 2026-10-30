@@ -1,29 +1,31 @@
-
 import React, { useState, useEffect, useRef } from "react";
 
 export default function About() {
   const [activeTab, setActiveTab] = useState("about");
   const [animationKey, setAnimationKey] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [hasAnimatedSkills, setHasAnimatedSkills] = useState(false);
-  const [displayValues, setDisplayValues] = useState({});
   const sectionRef = useRef(null);
 
   const profileImage =
     "https://res.cloudinary.com/daadrhhk9/image/upload/v1793278500/Group_258_fl1vfm.png";
 
-  const rawSkillsList = [
-    { name: "JavaScript", value: 95 },
-    { name: "Html", value: 98 },
-    { name: "Figma", value: 92 },
-    { name: "Css", value: 97 },
-    { name: "React", value: 95 },
-    { name: "MONGO DB", value: 95 },
-    { name: "EXPRESS JS", value: 93 },
-    { name: "GITHUB", value: 94 },
-    { name: "BOOTSTRAP", value: 97 },
-    { name: "RESPONSIVE DESIGN", value: 98 },
-    { name: "NODE JS", value: 95 },
+  const skillGroups = [
+    {
+      title: "Development",
+      skills: ["HTML", "CSS", "JavaScript", "React.js"],
+    },
+    {
+      title: "Frameworks",
+      skills: ["Tailwind CSS", "Responsive Design"],
+    },
+    {
+      title: "Backend",
+      skills: ["Node.js", "Express.js", "MongoDB"],
+    },
+    {
+      title: "Tools",
+      skills: ["Git", "GitHub", "Figma"],
+    },
   ];
 
   useEffect(() => {
@@ -33,7 +35,7 @@ export default function About() {
           setIsVisible(true);
         }
       },
-      { threshold: 0.05 }
+      { threshold: 0.05 },
     );
 
     if (sectionRef.current) {
@@ -42,52 +44,6 @@ export default function About() {
 
     return () => observer.disconnect();
   }, []);
-
-  useEffect(() => {
-    if (activeTab !== "skills") return;
-
-    if (hasAnimatedSkills) {
-      const finalValues = {};
-      rawSkillsList.forEach((skill, index) => {
-        finalValues[index] = skill.value;
-      });
-      setDisplayValues(finalValues);
-      return;
-    }
-
-    let currentStep = 0;
-    const steps = 35;
-    const duration = 1800;
-    const stepTime = duration / steps;
-
-    const timer = setInterval(() => {
-      currentStep += 1;
-
-      const progress = Math.min(currentStep / steps, 1);
-      const easedProgress = 1 - Math.pow(1 - progress, 3);
-      const newValues = {};
-
-      rawSkillsList.forEach((skill, index) => {
-        newValues[index] = Math.round(skill.value * easedProgress);
-      });
-
-      setDisplayValues(newValues);
-
-      if (currentStep >= steps) {
-        clearInterval(timer);
-
-        const finalValues = {};
-        rawSkillsList.forEach((skill, index) => {
-          finalValues[index] = skill.value;
-        });
-
-        setDisplayValues(finalValues);
-        setHasAnimatedSkills(true);
-      }
-    }, stepTime);
-
-    return () => clearInterval(timer);
-  }, [activeTab, hasAnimatedSkills]);
 
   const handleTabSwitch = (tab) => {
     if (tab !== activeTab) {
@@ -137,11 +93,43 @@ export default function About() {
           overflow-wrap: anywhere;
         }
 
+        .about-skills-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          column-gap: clamp(22px, 3vw, 48px);
+          row-gap: 56px;
+        }
+
+        .about-skill-group {
+          min-width: 0;
+          border-top: 1px solid #d4d4d4;
+          padding-top: 12px;
+        }
+
+        .about-skill-list {
+          display: flex;
+          flex-wrap: wrap;
+          column-gap: 16px;
+          row-gap: 10px;
+        }
+
+        .about-skill-item {
+          font-size: 15px;
+          line-height: 1.5;
+          color: #404040;
+          transition: color 200ms ease;
+        }
+
+        .about-skill-item:hover {
+          color: #000000;
+        }
+
         @keyframes aboutRise {
           from {
             opacity: 0;
             transform: translateY(18px);
           }
+
           to {
             opacity: 1;
             transform: translateY(0);
@@ -239,6 +227,11 @@ export default function About() {
             font-size: 15px;
             line-height: 1.75;
           }
+
+          .about-skills-grid {
+            column-gap: 22px;
+            row-gap: 24px;
+          }
         }
 
         @media (min-width: 640px) and (max-width: 1023px) {
@@ -256,14 +249,38 @@ export default function About() {
             gap: 20px;
           }
         }
+
+        @media (max-width: 639px) {
+          .about-skills-grid {
+            grid-template-columns: 1fr;
+            row-gap: 22px;
+          }
+
+          .about-skill-list {
+            column-gap: 14px;
+            row-gap: 8px;
+          }
+
+          .about-skill-item {
+            font-size: 14px;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .about-rise {
+            animation: none;
+          }
+
+          .about-skill-item {
+            transition: none;
+          }
+        }
       `}</style>
 
       <div className="about-layout">
-        {/* Photo: first on mobile, left on desktop */}
+        {/* Profile Photo */}
         <div className="about-photo-column relative flex justify-center lg:justify-start">
           <div className="about-photo relative">
-            
-
             <div
               className={`absolute -bottom-4 -left-4 z-20 grid grid-cols-6 gap-1.5 transition-all duration-700 delay-200 ${
                 isVisible
@@ -299,15 +316,13 @@ export default function About() {
         <div className="about-copy">
           <div
             key={animationKey}
-            className={`about-rise flex min-h-0 flex-1 flex-col ${
-              activeTab === "skills" ? "justify-center" : "justify-center"
-            }`}
+            className="about-rise flex min-h-0 flex-1 flex-col justify-center"
           >
             {activeTab === "about" ? (
               <div className="space-y-4 lg:space-y-5">
-                <div>
-                  <h2 className="mb-3 text-4xl font-light tracking-tight text-neutral-900 sm:text-5xl lg:mb-14 lg:text-9xl">
-                    My self'
+                <div className="mb-6 lg:mb-10">
+                  <h2 className="mb-3 text-4xl font-light tracking-tight text-neutral-900 sm:text-5xl lg:mb-10 lg:text-9xl">
+                    About Me'
                   </h2>
 
                   <p className="about-description text-neutral-700">
@@ -315,9 +330,9 @@ export default function About() {
                     <span className="font-semibold italic text-neutral-900">
                       muhemmed ansil
                     </span>
-                    , a passionate Full Stack Developer specializing in the
-                    MERN stack (MongoDB, Express.js, React.js, and Node.js).
-                    I'm a fresher who loves turning ideas into real-world web
+                    , a passionate Full Stack Developer specializing in the MERN
+                    stack (MongoDB, Express.js, React.js, and Node.js). I'm a
+                    fresher who loves turning ideas into real-world web
                     applications.
                   </p>
 
@@ -325,13 +340,13 @@ export default function About() {
                     During my studies, I worked on several CRUD and
                     mini-projects, which helped me gain hands-on experience in
                     frontend and backend development. I enjoy building clean,
-                    responsive, and user-friendly web interfaces while
-                    ensuring efficient backend performance.
+                    responsive, and user-friendly web interfaces while ensuring
+                    efficient backend performance.
                   </p>
                 </div>
 
+                {/* Experience and Education */}
                 <div className="about-history border-t border-neutral-300 pt-3 lg:pt-4">
-                  {/* Experience */}
                   <div className="min-w-0">
                     <h3 className="mb-2 text-sm font-bold text-neutral-900 sm:text-base">
                       Experience - (2024-2025)
@@ -344,13 +359,12 @@ export default function About() {
                     <p className="text-sm leading-relaxed text-neutral-700">
                       Developed CRUD-based web applications using the MERN
                       stack. Completed academic projects using React.js,
-                      Node.js, and MongoDB. Designed responsive user
-                      interfaces with React and Bootstrap, implemented
-                      RESTful APIs, and developed a personal website.
+                      Node.js, and MongoDB. Designed responsive user interfaces
+                      with React and Bootstrap, implemented RESTful APIs, and
+                      developed a personal website.
                     </p>
                   </div>
 
-                  {/* Education */}
                   <div className="min-w-0 border-t border-neutral-300 pt-3 lg:border-l lg:border-t-0 lg:pl-5 lg:pt-0">
                     <h3 className="mb-2 text-sm font-bold text-neutral-900 sm:text-base">
                       Education - (2024 sept - 2025 sept)
@@ -367,46 +381,43 @@ export default function About() {
                     <p className="text-sm leading-relaxed text-neutral-700">
                       I'm always eager to learn new technologies, improve my
                       skills, and take on new challenges. My goal is to
-                      contribute to impactful projects and grow as a
-                      developer in a creative, growth-oriented tech team.
+                      contribute to impactful projects and grow as a developer
+                      in a creative, growth-oriented tech team.
                     </p>
                   </div>
                 </div>
               </div>
             ) : (
+              /* Minimal Skills Tab */
               <div className="py-2">
-                <div className="mb-6">
-                  <h2 className="mb-3 text-4xl font-light tracking-tight text-neutral-800 sm:text-5xl lg:mb-14 lg:text-9xl">
-                    Skills'
+                <div className="mb-6 lg:mb-13">
+                  <h2 className="mb-3 text-4xl font-light tracking-tight text-neutral-800 sm:text-5xl lg:mb-5 lg:text-9xl">
+                    My Skills'
                   </h2>
 
                   <p className="text-sm leading-relaxed text-neutral-700 sm:text-base">
-                    Here is an overview of my technical stack, tools, and
-                    proficiencies acquired through hands-on development and
-                    projects.
+                    I specialize in building modern, responsive web experiences
+                    using HTML, Tailwind CSS, JavaScript, and React. I enjoy
+                    creating clean user interfaces with thoughtful layouts,
+                    smooth interactions, and designs that work seamlessly across
+                    different screen sizes.
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-x-5 gap-y-6 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-7">
-                  {rawSkillsList.map((skill, index) => (
-                    <div
-                      key={skill.name}
-                      className="transition-all duration-500"
-                      style={{
-                        opacity: isVisible ? 1 : 0,
-                        transform: isVisible
-                          ? "translateY(0)"
-                          : "translateY(10px)",
-                        transitionDelay: `${index * 35}ms`,
-                      }}
-                    >
-                      <span className="text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl lg:text-[clamp(28px,2.5vw,40px)]">
-                        {displayValues[index] ?? 0}%
-                      </span>
+                <div className="about-skills-grid lg:mb-13">
+                  {skillGroups.map((group) => (
+                    <div key={group.title} className="about-skill-group">
+                      <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-neutral-500">
+                        {group.title}
+                      </h3>
 
-                      <span className="mt-2 block text-xs font-medium text-neutral-800 sm:text-sm">
-                        {skill.name}
-                      </span>
+                      <div className="about-skill-list">
+                        {group.skills.map((skill) => (
+                          <span key={skill} className="about-skill-item">
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -414,11 +425,12 @@ export default function About() {
             )}
           </div>
 
-          {/* Tabs */}
+          {/* Tab Buttons */}
           <div className="mt-5 flex shrink-0 items-center gap-3 border-t border-neutral-300 pt-4 lg:mt-4 lg:pt-3">
             <button
               type="button"
               onClick={() => handleTabSwitch("about")}
+              aria-pressed={activeTab === "about"}
               className={`h-[42px] w-[125px] rounded-full text-xs font-medium shadow-sm transition-all duration-300 active:scale-95 ${
                 activeTab === "about"
                   ? "bg-neutral-900 text-white shadow-md"
@@ -431,6 +443,7 @@ export default function About() {
             <button
               type="button"
               onClick={() => handleTabSwitch("skills")}
+              aria-pressed={activeTab === "skills"}
               className={`h-[42px] w-[107px] rounded-full text-xs font-medium shadow-sm transition-all duration-300 active:scale-95 ${
                 activeTab === "skills"
                   ? "bg-neutral-900 text-white shadow-md"

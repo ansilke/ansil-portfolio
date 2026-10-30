@@ -583,11 +583,11 @@ function Herosection() {
                   </h1>
 
                   <p className="mt-2 text-xs font-light normal-case tracking-normal text-zinc-600">
-                    -am{" "}
+                    -I'm{" "}
                     <span className="font-bold italic text-zinc-900">
                       Muhammed Ansil
                     </span>
-                    , a web developer passionate,
+                    , a full stack developer passionate,
                     <br />
                     about building modern digital experiences.
                   </p>
@@ -628,7 +628,7 @@ function Herosection() {
                   </h1>
 
                   <p className="mt-3 whitespace-nowrap text-[14px] font-light tracking-normal text-zinc-600 opacity-95">
-                    -am{" "}
+                    -I'm{" "}
                     <span className="font-bold italic text-zinc-900">
                       Muhammed
                     </span>{" "}
@@ -636,7 +636,7 @@ function Herosection() {
                       Ansil
                     </span>{" "}
                     <span className="font-normal">
-                      , a web developer passionate,
+                      , a full stack developer passionate,
                       <br />
                       about building modern digital experiences.
                     </span>
