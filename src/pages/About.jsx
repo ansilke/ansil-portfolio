@@ -12,7 +12,7 @@ export default function About() {
   const skillGroups = [
     {
       title: "Development",
-      skills: ["HTML", "CSS", "JavaScript", "React.js"],
+      skills: ["HTML5", "CSS3", "JavaScript", "React.js"],
     },
     {
       title: "Frameworks",
@@ -327,7 +327,7 @@ export default function About() {
 
                   <p className="about-description text-neutral-700">
                     Hi, I'm{" "}
-                    <span className="font-semibold italic text-neutral-900">
+                    <span className="font-semibold text-neutral-900">
                       muhemmed ansil
                     </span>
                     , a passionate Full Stack Developer specializing in the MERN
